@@ -52,7 +52,7 @@ class PlayState extends FlxState
 	function startShootingMode () {
 		//Argh tired need to sleep lol.
 		player.kill();
-		
+
 	}
 	
 	/**
@@ -70,6 +70,13 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		super.update();
+
+		if (mode == PlayMode.shooting) {
+			if (FlxG.keys.justPressed.SPACE){
+				mode = PlayMode.running;
+				resetWorld();
+			}
+		}
 
 	}
 }

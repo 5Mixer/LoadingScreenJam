@@ -14,6 +14,9 @@ class Player extends FlxSprite {
 
 		state=_state;
 
+		velocity.x = 95;
+		velocity.y += 10;
+
 
 		loadGraphic("assets/images/Player.png",true,16,16);
 		animation.add("run",[0]);
@@ -26,10 +29,9 @@ class Player extends FlxSprite {
 
 		animation.play("run");
 
-		velocity.x = 95;
-		velocity.y += 10;
+		
 
-		if (world.checkForDeaths (this)) {
+		if (world.checkForDeaths (this) || velocity.x == 0) {
 			//Hit something deadly
 			trace("Restarting");
 			state.mode = PlayState.PlayMode.shooting;
@@ -38,8 +40,11 @@ class Player extends FlxSprite {
 			//this.y = (40);
 		}
 
+		velocity.x = 95;
+		velocity.y += 10;
+
 		if (world.collideWithLevel(this)){
-			if (FlxG.keys.justPressed.SPACE){
+			if (FlxG.keys.pressed.SPACE){
 
 				velocity.y = -250;
 			}
