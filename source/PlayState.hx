@@ -18,23 +18,41 @@ enum PlayMode {
 class PlayState extends FlxState
 {
 
-	var mode:PlayMode = PlayMode.running;
+	public var mode:PlayMode = PlayMode.running;
 	var testLevel:WorldLevel;
 	var player:Player;
+
+	public var activeLevel:WorldLevel;
 
 	override public function create():Void
 	{
 		super.create();
+		FlxG.camera.zoom = 5;
 
 		testLevel = new WorldLevel("assets/levels/TestLevel.tmx");
 		add(testLevel.allTilemaps);
 
-		player = new Player (40,40,testLevel);
+		activeLevel = testLevel;
+
+		resetWorld();
+		
+	}
+
+	public function resetWorld () {
+		if (mode == PlayMode.running) startRunMode();
+		if (mode == PlayMode.shooting) startShootingMode();
+	}
+
+	function startRunMode () {
+		player = new Player (40,40,this);
 		FlxG.camera.follow(player);
 		add(player);
+	}
 
+	function startShootingMode () {
+		//Argh tired need to sleep lol.
+		player.kill();
 		
-		FlxG.camera.zoom *= 5;
 	}
 	
 	/**

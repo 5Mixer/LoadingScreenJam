@@ -5,11 +5,14 @@ import flixel.FlxG;
 
 class Player extends FlxSprite {
 	var world:WorldLevel;
+	var state:PlayState;
 
-	public function new (X:Int,Y:Int,level:WorldLevel){
+	public function new (X:Int,Y:Int,_state:PlayState){
 		super(X,Y);
 
-		world = level;
+		world = _state.activeLevel;
+
+		state=_state;
 
 
 		loadGraphic("assets/images/Player.png",true,16,16);
@@ -24,19 +27,21 @@ class Player extends FlxSprite {
 		animation.play("run");
 
 		velocity.x = 95;
-		velocity.y += 9;
+		velocity.y += 10;
 
 		if (world.checkForDeaths (this)) {
 			//Hit something deadly
 			trace("Restarting");
-			this.x = (40);
-			this.y = (40);
+			state.mode = PlayState.PlayMode.shooting;
+			state.resetWorld();
+			//this.x = (40);
+			//this.y = (40);
 		}
 
 		if (world.collideWithLevel(this)){
 			if (FlxG.keys.justPressed.SPACE){
 
-				velocity.y = -230;
+				velocity.y = -250;
 			}
 		}
 	}
