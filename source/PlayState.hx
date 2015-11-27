@@ -7,9 +7,9 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
 
-enum playMode = {
-	running,
-	shooting
+enum PlayMode {
+	running;
+	shooting;
 }
 
 /**
@@ -18,14 +18,23 @@ enum playMode = {
 class PlayState extends FlxState
 {
 
-	var mode:playMode = playMode.running;
+	var mode:PlayMode = PlayMode.running;
+	var testLevel:WorldLevel;
+	var player:Player;
 
-	/**
-	 * Function that is called up when to state is created to set it up. 
-	 */
 	override public function create():Void
 	{
 		super.create();
+
+		testLevel = new WorldLevel("assets/levels/TestLevel.tmx");
+		add(testLevel.allTilemaps);
+
+		player = new Player (40,40,testLevel);
+		FlxG.camera.follow(player);
+		add(player);
+
+		
+		FlxG.camera.zoom *= 5;
 	}
 	
 	/**
@@ -43,5 +52,6 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		super.update();
-	}	
+
+	}
 }

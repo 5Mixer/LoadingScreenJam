@@ -14,7 +14,6 @@ import flixel.addons.editors.tiled.TiledMap;
 import flixel.addons.editors.tiled.TiledObject;
 import flixel.addons.editors.tiled.TiledObjectGroup;
 import flixel.addons.editors.tiled.TiledTileSet;
-import states.MiningSubState;
 import msignal.Signal;
 
 
@@ -24,47 +23,34 @@ class WorldLevel extends TiledMap
 	//The string arg is the ''TYPE'' of the object being loaded, in lowercase.
 	//The second arg contains data about the Tiled object, eg the x and y.
 	//TODO: Make mining sub state more generalised. How should NPC's in missions be handled?
-	var sigLoadTiledObject = new Signal2<TiledObject,states.MiningSubState>();
+	var sigLoadTiledObject = new Signal2<TiledObject,PlayState>();
 
-	// Array of tilemaps used for collision
-	public var foregroundTileMap:FlxTilemap;
-	public var lavaTileMap:FlxTilemap;
-	public var backgroundTiles:FlxTypedGroup<FlxTilemap>;
-	public var allTilemaps:FlxTypedGroup<FlxTilemap>;
-	public var wallTiles:FlxTypedGroup<FlxTilemap>;
-	private var collidableTileLayers:Array<FlxTilemap>;
+	public var foregroundTileMap:FlxTypedGroup<FlxTilemap>; //Layer that contains foreground, collidable objects. Undestroyable.
+	public var backgroundTiles:FlxTypedGroup<FlxTilemap>; //Layer with background objects, no collisions, undestroyable.
+	public var destructableTilemaps:FlxTilemap; //Editable layer, collisions on, and destruction on.
+	
+	public var allTilemaps:FlxTypedGroup<FlxTilemap>; //Every layer
+	private var collidableTileLayers:Array<FlxTilemap> = new Array<FlxTilemap>(); //Foreground and playerEditable layers
+	private var deadlyTileLayers:Array<FlxTilemap> = new Array<FlxTilemap>(); //Foreground and playerEditable layers
 
-
-	public var playerEditableTilemap:FlxTilemap;
-
-	private var playerReference:entities.Player;
-
-	//Mining stuff
-	private var timerCountUp:Float = 0;
-	private var miningTime:Float = 0.6;
-
-	public var lightMap:FlxTilemap;
-
-	public function new(tiledLevel:Dynamic, player:entities.Player)
+	public function new(tiledLevel:Dynamic)
 	{
 		super(tiledLevel);
 
-		playerReference = player;
 
 		//Setup default behaviour for loading Tiled objects.
 
 		sigLoadTiledObject.add(function (tiledObject,state){
-			if (tiledObject.type.toLowerCase() == 'astronaut'){
-				state.NPCAstronauts.add(new entities.Astronaut(tiledObject.x,tiledObject.y));
+			if (tiledObject.type.toLowerCase() == 'abc'){
 			}
 		});
 
 		//Initialise the different Tiled map groups.
-		wallTiles = new FlxTypedGroup<FlxTilemap>();
+		foregroundTileMap = new FlxTypedGroup<FlxTilemap>();
 		backgroundTiles = new FlxTypedGroup<FlxTilemap>();
 		allTilemaps = new FlxTypedGroup<FlxTilemap>();
 
-		lightMap=new FlxTilemap();
+		destructableTilemaps = new FlxTilemap();
 
 		//Limit the cameras movement.
 		FlxG.camera.setBounds(0, 0, fullWidth, fullHeight, true);
@@ -105,34 +91,37 @@ class WorldLevel extends TiledMap
 
 
 			tilemap.loadMap(tileLayer.tileArray, processedPath, tileSet.tileWidth, tileSet.tileHeight, 0, 1, 1, 1);
-			allTilemaps.add(tilemap);
+			
 
 			//Decide what type of layer it is.
-			if (tileLayer.properties.contains("isWall")){
-				wallTiles.add(tilemap);
-				backgroundTiles.add(tilemap);
-			} else if (tileLayer.properties.contains("nocollide"))
+			var hasCollisions = tileLayer.properties.contains("collisions");
+			var isDestructable = tileLayer.properties.contains("destructable");
+			var deadly = tileLayer.properties.contains("Deadly");
+
+			allTilemaps.add(tilemap);
+
+			if (hasCollisions)
 			{
+				collidableTileLayers.push (tilemap);
+			}
+
+			if (isDestructable) {
+				destructableTilemaps = tilemap;
+			}
+
+			if (deadly){
+				deadlyTileLayers.push(tilemap);
+			}
+
+			if (!hasCollisions && !isDestructable){
 				backgroundTiles.add(tilemap);
-
-
-			} else if (tileLayer.properties.contains("lava")) {
-				lavaTileMap = tilemap;
-			} else if (tileLayer.properties.contains("LightMap")) {
-				lightMap=(tilemap);
-			} else {
-				foregroundTileMap=(tilemap);
 			}
 		}
-
-		//Scale the lightmap
-		lightMap.scale.set(16,16);
 	}
 
-	public function loadObjects(state:MiningSubState)
+	public function loadObjects(state:PlayState)
 	{
 		//TODO: Be aware these may be null...
-
 
 		for (group in objectGroups)
 		{
@@ -145,7 +134,7 @@ class WorldLevel extends TiledMap
 		}
 	}
 
-	private function loadObject(o:TiledObject, g:TiledObjectGroup, state:MiningSubState)
+	private function loadObject(o:TiledObject, g:TiledObjectGroup, state:PlayState)
 	{
 
 		var x:Int = o.x;
@@ -181,136 +170,26 @@ class WorldLevel extends TiledMap
 		return false;
 	}
 
-	public function mineWithMouse () : Int {
-
-		var id:Int = 0;
-		if (FlxG.mouse.pressed){
-
-				if (this.foregroundTileMap.getTile(Std.int(FlxG.mouse.x/16),Std.int(FlxG.mouse.y/16)) != 0
-				&& this.foregroundTileMap.getTile(Std.int(FlxG.mouse.x/16),Std.int(FlxG.mouse.y/16)) != 21){
-					if (FlxG.mouse.distanceTo(playerReference.getMidpoint()) < 150){
-
-					//They are eligble to mine a block, (over it, in range, and mouse down). Increase timer.
-					timerCountUp += FlxG.elapsed;
-
-					if (timerCountUp > miningTime){
-
-						id=foregroundTileMap.getTile(Std.int(FlxG.mouse.x/16),Std.int(FlxG.mouse.y/16));
-						foregroundTileMap.setTile(Std.int(FlxG.mouse.x/16),Std.int(FlxG.mouse.y/16),0);
-
-						findWalls();
-
-						timerCountUp=0; //They are mined the block, restart their wait.
-					}
-				}else{
-					timerCountUp = 0;
-				}
-			}else{
-				timerCountUp = 0;
+	public function checkForDeaths(obj:FlxObject, ?notifyCallback:FlxObject->FlxObject->Void, ?processCallback:FlxObject->FlxObject->Bool):Bool
+	{
+		if (deadlyTileLayers != null)
+		{
+			for (map in deadlyTileLayers)
+			{
+				// IMPORTANT: Always collide the map with objects, not the other way around.
+				//			  This prevents odd collision errors (collision separation code off by 1 px).
+				return FlxG.overlap(map, obj, notifyCallback, processCallback != null ? processCallback : FlxObject.separate);
 			}
-		}else{
-			timerCountUp = 0;
 		}
-		return id; //return the type of block that was mined. 0 if nothing was mined
+		return false;
 	}
 
 
-	public function findWalls () {
-		for (x in 0...foregroundTileMap.widthInTiles){
-			for (y in 0...foregroundTileMap.heightInTiles){
-
-				if (foregroundTileMap.getTile(x,y) != 0 &&  foregroundTileMap.getTile(x,y+1) == 0){
-
-					wallTiles.members[0].setTile(x,y+1,11,true);
-
-				}else{
-					wallTiles.members[0].setTile(x,y+1,0,true);
-				}
-			}
-		}
-	}
+	
 
 	public function updateAllBuffers () {
 		for (l in allTilemaps){
 			l.updateBuffers();
 		}
-	}
-
-
-	var coveredPoints:Array<LightNode> = new Array<LightNode>();
-	var toBeCheckedPoints:Array<LightNode> = new Array<LightNode>();
-	public function floodFill (it:Int){
-
-
-		clear(coveredPoints);
-		clear(toBeCheckedPoints);
-
-		//Make a 2d dimensional array of points that apply to that Array.
-		for (x in 0...30){
-			for (y in 0...30){
-				if (foregroundTileMap.getTile(Std.int(x-playerReference.x),Std.int(y-playerReference.y)) != 20){
-
-					//var light = approx_distance(Std.int(playerReference.x/16-x),Std.int(playerReference.y/16-y));
-					var light = approx_distance(Std.int(playerReference.x/16-x),Std.int(playerReference.y/16-y))/1.4;
-
-					if (foregroundTileMap.getTile(x,y) != 0){
-							light+=8;
-					}else{
-					}
-
-					lightMap.setTile(x,y,Std.int(light+1));
-				}
-			}
-		}
-
-
-	}
-	public function containsPoint (array:Array<LightNode>,point:LightNode){
-		for (pt in array) if (point.x == pt.x && point.y == pt.y) return true;
-		return false;
-	}
-	public function removePoint  (array:Array<LightNode>,point:LightNode){
-		for (pt in array) {
-			if (point.x == pt.x && point.y == pt.y)
-				array.remove(pt);
-				return;
-		}
-	}
-
-	private function approx_distance(dx, dy )
-	{
-	   var min, max;
-
-	   if ( dx < 0 ) dx = -dx;
-	   if ( dy < 0 ) dy = -dy;
-
-	   if ( dx < dy )
-	   {
-	      min = dx;
-	      max = dy;
-	   } else {
-	      min = dy;
-	      max = dx;
-	   }
-		//return min;
-	   // coefficients equivalent to ( 123/128 * max ) and ( 51/128 * min )
-	   return ((( max << 8 ) + ( max << 3 ) - ( max << 4 ) - ( max << 1 ) +
-	          ( min << 7 ) - ( min << 5 ) + ( min << 3 ) - ( min << 1 )) >> 8 );
-	}
-
-	public inline static function clear(arr:Array<Dynamic>){
-       #if (cpp||php)
-          arr.splice(0,arr.length);
-       	#else
-          untyped arr.length = 0;
-       #end
-   }
-}
-
-class LightNode extends FlxPoint{
-	public var light:Int = 1;
-	public function setLight (l:Int){
-		light = l;
-		return this;
 	}
 }
