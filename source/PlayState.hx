@@ -27,15 +27,17 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		super.create();
-		FlxG.camera.zoom = 5;
 
 		testLevel = new WorldLevel("assets/levels/TestLevel.tmx");
 		add(testLevel.allTilemaps);
 
 		activeLevel = testLevel;
 
+
+		FlxG.camera.follow(player);
+
 		resetWorld();
-		
+
 	}
 
 	public function resetWorld () {
@@ -45,7 +47,7 @@ class PlayState extends FlxState
 
 	function startRunMode () {
 		player = new Player (40,40,this);
-		FlxG.camera.follow(player);
+		FlxG.camera.follow(player,0);
 		add(player);
 	}
 
@@ -54,9 +56,9 @@ class PlayState extends FlxState
 		player.kill();
 
 	}
-	
+
 	/**
-	 * Function that is called when this state is destroyed - you might want to 
+	 * Function that is called when this state is destroyed - you might want to
 	 * consider setting all objects this state uses to null to help garbage collection.
 	 */
 	override public function destroy():Void

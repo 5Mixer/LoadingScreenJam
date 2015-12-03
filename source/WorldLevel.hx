@@ -28,7 +28,7 @@ class WorldLevel extends TiledMap
 	public var foregroundTileMap:FlxTypedGroup<FlxTilemap>; //Layer that contains foreground, collidable objects. Undestroyable.
 	public var backgroundTiles:FlxTypedGroup<FlxTilemap>; //Layer with background objects, no collisions, undestroyable.
 	public var destructableTilemaps:FlxTilemap; //Editable layer, collisions on, and destruction on.
-	
+
 	public var allTilemaps:FlxTypedGroup<FlxTilemap>; //Every layer
 	private var collidableTileLayers:Array<FlxTilemap> = new Array<FlxTilemap>(); //Foreground and playerEditable layers
 	private var deadlyTileLayers:Array<FlxTilemap> = new Array<FlxTilemap>(); //Foreground and playerEditable layers
@@ -91,7 +91,7 @@ class WorldLevel extends TiledMap
 
 
 			tilemap.loadMap(tileLayer.tileArray, processedPath, tileSet.tileWidth, tileSet.tileHeight, 0, 1, 1, 1);
-			
+
 
 			//Decide what type of layer it is.
 			var hasCollisions = tileLayer.properties.contains("collisions");
@@ -185,7 +185,7 @@ class WorldLevel extends TiledMap
 	}
 
 
-	
+
 
 	public function updateAllBuffers () {
 		for (l in allTilemaps){
