@@ -11,22 +11,33 @@
    eJztw0ENAAAMA6Grf9OTsQ8krJqqqqqqqqqqqqqqqj4//t4LuQ==
   </data>
  </layer>
+ <layer name="Deadly" width="100" height="30">
+  <properties>
+   <property name="Deadly" value="true"/>
+   <property name="tileset" value="levelTileset"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20MH6AAAAAAAAAAAAAAAOBvLuAAAQ==
+  </data>
+ </layer>
+ <layer name="Destructable" width="100" height="30">
+  <properties>
+   <property name="Deadly" value=""/>
+   <property name="Destructable" value="true"/>
+   <property name="collisions" value="true"/>
+   <property name="tileset" value="levelTileset"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt1EEKwCAMBEDJ/x/tuUK0NEIRZy7JJZddSGsAAAAAAAAAAHeLn+95+pJnJDt1b/PMOtDHXqs8Y5iznbosz7EHfdTs+kP6ADhDBwmOADk=
+  </data>
+ </layer>
  <layer name="Foreground" width="100" height="30">
   <properties>
    <property name="collisions" value="true"/>
    <property name="tileset" value="levelTileset"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzt0cEKgCAQBmH53/+hu4WIRoeoWZsPxD2ILEyaSPL1Ajql2YPEHiz2YLEHiz1Y7MFiDxZ7sNiDxR4s9mCxB4s9WOzBYg8We7DYg8UeLPZg2aFH9f17lXtkuHdQscfYodr+V6r0yGS2x7tmDfrZHvf+e+rdn3t4OEfS2gEoGQFf
-  </data>
- </layer>
- <layer name="Destructable" width="100" height="30">
-  <properties>
-   <property name="Destructable" value="true"/>
-   <property name="tileset" value="levelTileset"/>
-  </properties>
-  <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20MH6AAAAAAAAAAAAAAAOBvLuAAAQ==
+   eJzt0SEKADAQA8Hj/v/ourrqrpiB+MDuULK/D3Dt6FGiR4seLXq06NGiR4seLXq06NGiR4seLXq06NGiR4seLXq06NGiR4seLXq06NGiR4seLXq06NGylhvwdgDFAwEz
   </data>
  </layer>
  <layer name="Destructable&amp;Deadly" width="100" height="30">
@@ -37,15 +48,6 @@
   </properties>
   <data encoding="base64" compression="zlib">
    eJztyjEKAAAIAzHB///ZVVwdREimgzYCAAAAAAAAAAAA4I9c/rJtswG4VaW0ABY=
-  </data>
- </layer>
- <layer name="Deadly" width="100" height="30">
-  <properties>
-   <property name="Deadly" value="true"/>
-   <property name="tileset" value="levelTileset"/>
-  </properties>
-  <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20MH6AAAAAAAAAAAAAAAOBvLuAAAQ==
   </data>
  </layer>
 </map>

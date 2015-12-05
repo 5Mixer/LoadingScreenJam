@@ -27,7 +27,7 @@ class WorldLevel extends TiledMap
 
 	public var foregroundTileMap:FlxTypedGroup<FlxTilemap>; //Layer that contains foreground, collidable objects. Undestroyable.
 	public var backgroundTiles:FlxTypedGroup<FlxTilemap>; //Layer with background objects, no collisions, undestroyable.
-	public var destructableTilemaps:FlxTilemap; //Editable layer, collisions on, and destruction on.
+	public var destructableTilemaps:FlxTypedGroup<FlxTilemap>; //Editable layer, collisions on, and destruction on.
 
 	public var allTilemaps:FlxTypedGroup<FlxTilemap>; //Every layer
 	private var collidableTileLayers:Array<FlxTilemap> = new Array<FlxTilemap>(); //Foreground and playerEditable layers
@@ -50,7 +50,7 @@ class WorldLevel extends TiledMap
 		backgroundTiles = new FlxTypedGroup<FlxTilemap>();
 		allTilemaps = new FlxTypedGroup<FlxTilemap>();
 
-		destructableTilemaps = new FlxTilemap();
+		destructableTilemaps = new FlxTypedGroup<FlxTilemap>();
 
 		//Limit the cameras movement.
 		FlxG.camera.setBounds(0, 0, fullWidth, fullHeight, true);
@@ -95,7 +95,7 @@ class WorldLevel extends TiledMap
 
 			//Decide what type of layer it is.
 			var hasCollisions = tileLayer.properties.contains("collisions");
-			var isDestructable = tileLayer.properties.contains("destructable");
+			var isDestructable = tileLayer.properties.contains("Destructable");
 			var deadly = tileLayer.properties.contains("Deadly");
 
 			allTilemaps.add(tilemap);
@@ -106,7 +106,7 @@ class WorldLevel extends TiledMap
 			}
 
 			if (isDestructable) {
-				destructableTilemaps = tilemap;
+				destructableTilemaps.add(tilemap);
 			}
 
 			if (deadly){
@@ -156,6 +156,11 @@ class WorldLevel extends TiledMap
 		}
 	}
 
+	public function destroyDestructableTile (x,y){
+		for (map in destructableTilemaps)
+			map.setTile(x,y,0);
+	}
+
 	public function collideWithLevel(obj:FlxObject, ?notifyCallback:FlxObject->FlxObject->Void, ?processCallback:FlxObject->FlxObject->Bool):Bool
 	{
 		if (collidableTileLayers != null)
@@ -164,7 +169,8 @@ class WorldLevel extends TiledMap
 			{
 				// IMPORTANT: Always collide the map with objects, not the other way around.
 				//			  This prevents odd collision errors (collision separation code off by 1 px).
-				return FlxG.overlap(map, obj, notifyCallback, processCallback != null ? processCallback : FlxObject.separate);
+				var result = FlxG.overlap(map, obj, notifyCallback, processCallback != null ? processCallback : FlxObject.separate);
+				if (result) return result; 
 			}
 		}
 		return false;
@@ -178,7 +184,8 @@ class WorldLevel extends TiledMap
 			{
 				// IMPORTANT: Always collide the map with objects, not the other way around.
 				//			  This prevents odd collision errors (collision separation code off by 1 px).
-				return FlxG.overlap(map, obj, notifyCallback, processCallback != null ? processCallback : FlxObject.separate);
+				var result = FlxG.overlap(map, obj, notifyCallback, processCallback != null ? processCallback : FlxObject.separate);
+				if (result) return result; 
 			}
 		}
 		return false;

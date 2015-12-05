@@ -3,7 +3,7 @@ package ;
 import flixel.FlxSprite;
 import flixel.FlxG;
 
-class Player extends FlxSprite {
+class Ball extends FlxSprite {
 	var world:WorldLevel;
 	var state:PlayState;
 
@@ -18,9 +18,7 @@ class Player extends FlxSprite {
 		velocity.y += 10;
 
 
-		loadGraphic("assets/images/Player.png",true,16,16);
-		animation.add("run",[0]);
-
+		makeGraphic(flixel.util.FlxColor.GRAY,16,16);
 		drag.set();
 	}
 
@@ -29,10 +27,11 @@ class Player extends FlxSprite {
 
 		animation.play("run");
 
-		
+
 
 		if (world.checkForDeaths (this) || velocity.x == 0) {
 			//Hit something deadly
+			trace("Restarting");
 			state.mode = PlayState.PlayMode.shooting;
 			state.resetWorld();
 			//this.x = (40);
