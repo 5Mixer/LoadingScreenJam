@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="30" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="levelTileset" tilewidth="16" tileheight="16">
+  <image source="../images/levelTileset.png" width="160" height="160"/>
+ </tileset>
+ <tileset firstgid="101" name="levelTilesetDestructable" tilewidth="16" tileheight="16">
+  <image source="../images/levelTilesetDestructable.png" width="160" height="160"/>
+ </tileset>
+ <layer name="Destructable" width="100" height="30">
+  <properties>
+   <property name="Destructable" value="true"/>
+   <property name="collisions" value="true"/>
+   <property name="deadly" value="true"/>
+   <property name="tileset" value="levelTilesetDestructable"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztmcsOhEAIBI1nz/7/p3rx5iOONNDNUAnZm8t0CWbXZbmydqXVF7J7nKlGye63ev0lu++qZYWxJ0/QZ/I8e1UHT6DO45nDLC6QRGTB4GM/r7+dn7vjd1mIujcVZoPFWVQe7D5YiMxD1cXb7KDnKjIPVR9WWHbhHW8uLH0zn5mZ2WZDgfbBxVcX6B3UO+2ZirOh7LuiD2VUfCjf8yMw+bBmXsEZ2keFTDJB/hZs7GTuK0X3f94njfw3xfT8YAblQeGdhwqozLJ9KO6lDEacdKb+9M7ioZ8hjSIH2ugItw==
+  </data>
+ </layer>
+ <layer name="Destructable&amp;Deadly" width="100" height="30">
+  <properties>
+   <property name="Deadly" value="true"/>
+   <property name="Destructable" value="true"/>
+   <property name="collisions" value="true"/>
+   <property name="tileset" value="levelTilesetDestructable"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt1dEGACEQBdDo//95H3rdSNPQ7J5DJBEz19QaAAAA3Ku/rC++WclOXdQUAO7ln+ZP5J0oGQKyVJkvfbKf3Vk5JyYrL1n9qpJ1ztN7gMH8gzUPIUcAqQ==
+  </data>
+ </layer>
+ <layer name="Deadly" width="100" height="30">
+  <properties>
+   <property name="Deadly" value="true"/>
+   <property name="tileset" value="levelTileset"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzMEJAAAIA7GC++/sFlIwgfteAgAAAAAAAAAAAAB8Mgf/5ui1HlMAfA==
+  </data>
+ </layer>
+ <layer name="Foreground" width="100" height="30">
+  <properties>
+   <property name="collisions" value="true"/>
+   <property name="tileset" value="levelTileset"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt2rEOgCAQBFFibe3/f6qF2qG5CHi7OJMQW/QBxsSllLJUBuWEgVZYaIWHVnhohYdWeGiFhVZ4aIWHTk7fgls55rme1y13OkNy8nibk+MfPJzCQyssjqJn2uizDw+tnD2c3tPRuTp7zJiSR+/17rR/rpQ8CA+18KiXddapezi+A1ri+7xPvdZNpkfrPbjtnch8n/6Bq/0jFx2z9ZV9yzOfzUphv/3NQ+GZ3+Vi4b4GImVYMGJjB2YZBjU=
+  </data>
+ </layer>
+ <layer name="NewLevel" width="100" height="30">
+  <properties>
+   <property name="NewLevel" value="true"/>
+   <property name="tileset" value="levelTileset"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0TENADAMwLA+4095dxEsk2wEkTIDAAAAAD3ndQCLHy1+tPjR4keLHy1+tPjR4keLHy1+tPjR4keLHy1+tPgB/OYCUisAUQ==
+  </data>
+ </layer>
+</map>

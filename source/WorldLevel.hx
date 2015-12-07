@@ -176,6 +176,7 @@ class WorldLevel extends TiledMap
 			{
 				// IMPORTANT: Always collide the map with objects, not the other way around.
 				//			  This prevents odd collision errors (collision separation code off by 1 px).
+				if (map == null) throw("Awww mate");
 				var result = FlxG.overlap(map, obj, notifyCallback, processCallback != null ? processCallback : FlxObject.separate);
 				if (result) return result; 
 			}

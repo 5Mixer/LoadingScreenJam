@@ -18,6 +18,17 @@ class MenuState extends FlxState
 	override public function create():Void
 	{
 		super.create();
+
+
+		var page:FlxSprite = new FlxSprite(0,0);
+		page.loadGraphic("assets/images/main.png");
+		add(page);
+
+		 #if flash
+		 FlxG.sound.playMusic("assets/music/MusicFlash.mp3", 1, true);
+		 #else
+		 FlxG.sound.playMusic("assets/music/MusicOther.ogg", 1, true);
+		 #end
 	}
 	
 	/**
@@ -35,5 +46,7 @@ class MenuState extends FlxState
 	override public function update():Void
 	{
 		super.update();
+
+		if (FlxG.keys.justPressed.SPACE) FlxG.switchState(new PlayState());
 	}	
 }

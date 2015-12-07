@@ -66,10 +66,14 @@ class PlayState extends FlxState
 		add(background);
 		add(foreground);
 
-		activeLevel = new WorldLevel("assets/levels/TestLevel.tmx");
+		loadingBar =  new LoadingBar(0,0,this);
+
+		
+		activeLevel = new WorldLevel("assets/levels/"+level+".tmx");
 		add(activeLevel.allTilemaps);
 
-		loadingBar =  new LoadingBar(0,0,this);
+
+		
 		add(loadingBar);
 
 
@@ -133,19 +137,37 @@ class PlayState extends FlxState
 		if (activeLevel.checkForNewLevel(player)){
 			newLevel();
 		}
+
+		if (FlxG.keys.justPressed.R){
+			newLevel();
+		}
 	}
 
 	public function newLevel(){
+		if (level == 2){
+			FlxG.switchState(new WinState());
+			return;
+		}
+
+		level++;
 		
-		for (map in activeLevel.allTilemaps) map.kill();
+
+
+		if (activeLevel != null)
+			for (map in activeLevel.allTilemaps)
+				map.kill();
+
 		activeLevel=null;
 
 		activeLevel = new WorldLevel("assets/levels/"+level+".tmx");
 		add(activeLevel.allTilemaps);
 
-		startRunMode(new hxColorToolkit.spaces.HSL(Math.floor(Math.random()*360), 60, 10+Math.floor(Math.random()*35)));
+		player.destroy();
+		player = new Player (40,40,this);
+		add(player);
+		FlxG.camera.follow(player);
 
-		level++;
+		
 	}
 
 	function updateShootMode () {

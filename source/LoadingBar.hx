@@ -19,7 +19,7 @@ class LoadingBar extends FlxSprite {
 
 		scrollFactor.set();
 
-		makeGraphic(FlxG.width,32,flixel.util.FlxColor.RED);
+		makeGraphic(FlxG.width,20,flixel.util.FlxColor.WHITE);
 		origin.set(0,0);
 		width = 0;
 	}

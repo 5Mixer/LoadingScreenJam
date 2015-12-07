@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="30" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="levelTileset" tilewidth="16" tileheight="16">
+  <image source="../images/levelTileset.png" width="160" height="160"/>
+ </tileset>
+ <tileset firstgid="101" name="levelTilesetDestructable" tilewidth="16" tileheight="16">
+  <image source="../images/levelTilesetDestructable.png" width="160" height="160"/>
+ </tileset>
+ <layer name="Destructable" width="100" height="30">
+  <properties>
+   <property name="Destructable" value="true"/>
+   <property name="collisions" value="true"/>
+   <property name="deadly" value="true"/>
+   <property name="tileset" value="levelTilesetDestructable"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt10EKgCAURVFpES6x/S8hhCb6Rcmw99N7oFE06F2iCuEbx6LHKtQ70qNPvS096tQb08NS70wPK93veR/q3emh35oeOfXW9LDUe9PDUm9OD0u9Oz1y5QbqDrv3SMoNlJvT49k2PAPztbapnaOFP+zvEy18mdkivrx+V633/qgY6DGq9X02ih6+0MMXevhCDz2+kbX4T5mjtyv/iQCAv7oAknAGrw==
+  </data>
+ </layer>
+ <layer name="Destructable&amp;Deadly" width="100" height="30">
+  <properties>
+   <property name="Deadly" value="true"/>
+   <property name="Destructable" value="true"/>
+   <property name="collisions" value="true"/>
+   <property name="tileset" value="levelTilesetDestructable"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzcEJAAAIAzHB/Xd2hYJ+hOR5FFoFAAAAAAAAAAAA8Ecvd0lPPwC4NYPQABA=
+  </data>
+ </layer>
+ <layer name="Deadly" width="100" height="30">
+  <properties>
+   <property name="Deadly" value="true"/>
+   <property name="tileset" value="levelTileset"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztw7EJAAAIA7CC///sEx0UEkgCAAAAAAAAAAAAwEVTCPDJAiX3ADQ=
+  </data>
+ </layer>
+ <layer name="Foreground" width="100" height="30">
+  <properties>
+   <property name="collisions" value="true"/>
+   <property name="tileset" value="levelTileset"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztmEEOwyAMBBHn/v+9Ua8obVx7TTbqjOQLQUB2yCGeY4w5IMtsKMiDDy/w4QU+vMCHF/jwAh9e4MOLbM746CF71/lGeshmio8esnmezcdHncrdXufjQoMqQ3xowIcPygzxUafDB07yKLPDhxf48AIfXvCPfg/RHuM6DnUqPRT6Wr+j7D9l+vbQl9G/+4i+566Moj669os8/3SWqzm7S8F7nZegpnCt6F47qyObq3G3OuPuM63nesK60WwVZPf8Nj97blUmBxg/B4E=
+  </data>
+ </layer>
+ <layer name="NewLevel" width="100" height="30">
+  <properties>
+   <property name="NewLevel" value="true"/>
+   <property name="tileset" value="levelTileset"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0TENADAMwLA+4095dxEsk2wEkTIDAAAAAD3ndQCLHy1+tPjR4keLHy1+tPjR4keLHy1+tPjR4keLHy1+tPgB/OYCUisAUQ==
+  </data>
+ </layer>
+</map>

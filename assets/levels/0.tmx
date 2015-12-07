@@ -19,7 +19,6 @@
  </layer>
  <layer name="Destructable&amp;Deadly" width="100" height="30">
   <properties>
-   <property name="Deadly" value="true"/>
    <property name="Destructable" value="true"/>
    <property name="collisions" value="true"/>
    <property name="tileset" value="levelTilesetDestructable"/>
@@ -34,7 +33,7 @@
    <property name="tileset" value="levelTileset"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztzrEJAAAMw7BC/v+5N3RqBgm8ewYAAAAAAAAA4CbfAwAAQLWUR68FQc8AfA==
+   eJzt1rEJAEAIA0DB/Xd2gW9E4S3uIE2qlIkAAAAAAAAAAOjJ3wMAAIDnL590m/J4uKsAYocAiA==
   </data>
  </layer>
  <layer name="Foreground" width="100" height="30">
@@ -43,7 +42,7 @@
    <property name="tileset" value="levelTileset"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzt2r0KgzAUQOGgq3PmvP9T6iKKRGP8waOeD+5gh9beU2wLNiGEJjN6hg1YbMFiDxZ7sNiDxR4stmCxB4s9OPwvyGIPFnuw2IPFFiz2YLEHiz1Y7MFiDxZ7sNijLA7TZSbe8Fr2mIx7P7rn3D06W1N6jr84u/ctaees+XqPOJs3+No9cLn9p2dO5ZCaaxvRnv0vj8lqv28IlteeVHlMdeZ3wJr24sdqzvONn63RFe/RuWd6vnkFcw==
+   eJzt2rsKhDAUANFgbZ06//+V2ogi0Rifo86BW9i46x1wXbAJITSZ0TNswGILFnuw2IPFHiz2YLEFiz1Y7MHhf0EWe7DYg8UeLLZgsQeLPVjswWIPFnuw2IPFHmWxnzYz8YLPssdo2PvePefe0Vmb0jn+4uje16SNs+TrPeJk3uBr78Dl9p+e+Sq71NzbiLbsf35MVvt7QzC/96TKY6ojzwF3qn1uIV5DyRnX6FwzHZ3xBWc=
   </data>
  </layer>
  <layer name="NewLevel" width="100" height="30">
