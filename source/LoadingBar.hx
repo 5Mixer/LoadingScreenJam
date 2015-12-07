@@ -8,6 +8,7 @@ class LoadingBar extends FlxSprite {
 	var state:PlayState;
 
 	public var progress:Float=0;
+	public var tween:flixel.tweens.FlxTween;
 
 	public function new (X:Int,Y:Int,_state:PlayState){
 		super(X,Y);
@@ -19,6 +20,7 @@ class LoadingBar extends FlxSprite {
 		scrollFactor.set();
 
 		makeGraphic(FlxG.width,32,flixel.util.FlxColor.RED);
+		origin.set(0,0);
 		width = 0;
 	}
 
@@ -28,7 +30,14 @@ class LoadingBar extends FlxSprite {
 		scale.x = value;
 	}
 	public function load (amount:Float){
-		setProgressValue(progress + amount);
+		var newProgress = progress + amount;
+		var start = progress;
+
+		if (amount < 0.02){
+			setProgressValue(progress + amount);
+		}else{
+			tween = flixel.tweens.FlxTween.num(start,newProgress,amount,null,setProgressValue);
+		}
 	}
 
 
@@ -38,3 +47,4 @@ class LoadingBar extends FlxSprite {
 		super.update();
 	}
 }
+

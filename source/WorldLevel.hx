@@ -28,6 +28,7 @@ class WorldLevel extends TiledMap
 	public var foregroundTileMap:FlxTypedGroup<FlxTilemap>; //Layer that contains foreground, collidable objects. Undestroyable.
 	public var backgroundTiles:FlxTypedGroup<FlxTilemap>; //Layer with background objects, no collisions, undestroyable.
 	public var destructableTilemaps:FlxTypedGroup<FlxTilemap>; //Editable layer, collisions on, and destruction on.
+	public var newLevelTilemap:FlxTilemap; //Editable layer, collisions on, and destruction on.
 
 	public var allTilemaps:FlxTypedGroup<FlxTilemap>; //Every layer
 	private var collidableTileLayers:Array<FlxTilemap> = new Array<FlxTilemap>(); //Foreground and playerEditable layers
@@ -112,7 +113,9 @@ class WorldLevel extends TiledMap
 			if (deadly){
 				deadlyTileLayers.push(tilemap);
 			}
-
+			if (tileLayer.properties.contains("NewLevel")){
+				newLevelTilemap = tilemap;
+			}
 			if (!hasCollisions && !isDestructable){
 				backgroundTiles.add(tilemap);
 			}
@@ -157,8 +160,12 @@ class WorldLevel extends TiledMap
 	}
 
 	public function destroyDestructableTile (x,y){
-		for (map in destructableTilemaps)
+
+		for (map in destructableTilemaps){
+			if (x < 0 || x > map.widthInTiles || y < 0 || y > map.heightInTiles) return false;
 			map.setTile(x,y,0);
+		}
+		return true;
 	}
 
 	public function collideWithLevel(obj:FlxObject, ?notifyCallback:FlxObject->FlxObject->Void, ?processCallback:FlxObject->FlxObject->Bool):Bool
@@ -175,6 +182,10 @@ class WorldLevel extends TiledMap
 		}
 		return false;
 	}
+	public function checkForNewLevel(obj:FlxObject){
+		if (newLevelTilemap == null) throw("Null map!");
+		return FlxG.collide(newLevelTilemap, obj);
+	}
 
 	public function checkForDeaths(obj:FlxObject, ?notifyCallback:FlxObject->FlxObject->Void, ?processCallback:FlxObject->FlxObject->Bool):Bool
 	{
@@ -182,10 +193,11 @@ class WorldLevel extends TiledMap
 		{
 			for (map in deadlyTileLayers)
 			{
+				if (map == null) throw("Null map!");
 				// IMPORTANT: Always collide the map with objects, not the other way around.
 				//			  This prevents odd collision errors (collision separation code off by 1 px).
-				var result = FlxG.overlap(map, obj, notifyCallback, processCallback != null ? processCallback : FlxObject.separate);
-				if (result) return result; 
+				var result = FlxG.overlap(map, obj);
+				if (result) return FlxG.overlap(map, obj, notifyCallback, processCallback != null ? processCallback : FlxObject.separate); 
 			}
 		}
 		return false;
